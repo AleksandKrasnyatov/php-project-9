@@ -21,4 +21,9 @@ $app->get('/', function ($request, $response) {
     return  $this->get('renderer')->render($response, "index.php");
 });
 
+$app->post('/urls', function ($request, $response, $args) {
+    //logic
+    return  $this->get('renderer')->render($response, "index.php");
+});
+
 $app->run();
