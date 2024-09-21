@@ -1,0 +1,7 @@
+{
+    "name": "hexlet/code",
+    "require": {},
+    "require-dev": {
+        "squizlabs/php_codesniffer": "*"
+    }
+}
