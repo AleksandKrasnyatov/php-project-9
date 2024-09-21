@@ -8,6 +8,6 @@ $app = AppFactory::create();
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function ($request, $response) {
-    $response->write('Welcome to Slim!');
+    return $response->write('Welcome to Slim!');
 });
 $app->run();
