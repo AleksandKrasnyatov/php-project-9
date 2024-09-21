@@ -2,12 +2,23 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+use DI\Container;
 use Slim\Factory\AppFactory;
+use Slim\Views\PhpRenderer;
 
-$app = AppFactory::create();
+$container = new Container();
+$container->set('renderer', function () {
+    $renderer = new PhpRenderer(__DIR__ . '/../templates');
+    $renderer->setLayout('layout.php');
+    return $renderer;
+});
+
+$app = AppFactory::createFromContainer($container);
+
 $app->addErrorMiddleware(true, true, true);
 
 $app->get('/', function ($request, $response) {
-    return $response->write('Welcome to Slim!');
+    return  $this->get('renderer')->render($response, "index.php");
 });
+
 $app->run();
