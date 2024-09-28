@@ -38,6 +38,10 @@ $container->set(\PDO::class, function () {
     return $conn;
 });
 
+$initFilePath = implode('/', [dirname(__DIR__), 'init.sql']);
+$initSql = file_get_contents($initFilePath);
+$container->get(\PDO::class)->exec($initSql);
+
 $app = AppFactory::createFromContainer($container);
 
 $app->addErrorMiddleware(true, true, true);
