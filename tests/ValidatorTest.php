@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Validator;
+
 use App\UrlValidator;
 use PHPUnit\Framework\TestCase;
 
@@ -37,6 +39,4 @@ class ValidatorTest extends TestCase
         $longException = ['name' => "url is not valid"];
         $this->assertEquals($longException, $this->validator->validate($incorrectUrl));
     }
-
 }
-

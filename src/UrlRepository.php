@@ -14,7 +14,7 @@ class UrlRepository
     public function getEntities(): array
     {
         $urls = [];
-        $sql = "SELECT * FROM urls";
+        $sql = "SELECT * FROM urls ORDER BY created_at DESC";
         $stmt = $this->conn->query($sql);
 
         while ($row = $stmt->fetch()) {
@@ -31,7 +31,7 @@ class UrlRepository
         $sql = "SELECT * FROM urls WHERE id = ?";
         $stmt = $this->conn->prepare($sql);
         $stmt->execute([$id]);
-        if ($row = $stmt->fetch())  {
+        if ($row = $stmt->fetch()) {
             $url = Url::create($row['name'], $row['created_at']);
             $url->setId($row['id']);
             return $url;
@@ -40,7 +40,23 @@ class UrlRepository
         return null;
     }
 
-    public function save(Url $url): void {
+    public function findByName(string $name): ?Url
+    {
+        $sql = "SELECT * FROM urls WHERE name = :name";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':name', $name);
+        $stmt->execute();
+        if ($row = $stmt->fetch()) {
+            $url = Url::create($row['name'], $row['created_at']);
+            $url->setId($row['id']);
+            return $url;
+        }
+
+        return null;
+    }
+
+    public function save(Url $url): void
+    {
         if ($url->exists()) {
             $this->update($url);
         } else {
@@ -70,7 +86,7 @@ class UrlRepository
         $stmt->bindParam(':name', $name);
         $stmt->bindParam(':created_at', $created_at);
         $stmt->execute();
-        $id = (int) $this->conn->lastInsertId();
+        $id = (int)$this->conn->lastInsertId();
         $url->setId($id);
     }
 }
