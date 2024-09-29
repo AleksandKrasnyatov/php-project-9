@@ -2,6 +2,7 @@
 
 /**
  * @var string $content
+ * @var array $flash
  */
 
 ?>
@@ -28,7 +29,7 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link active" href="/">Главная</a>
+                            <a class="nav-link" href="/">Главная</a>
                         </li>
 
                         <li class="nav-item">
@@ -39,6 +40,11 @@
                 </div>
             </nav>
         </header>
+        <?php if (!empty($flash)): ?>
+            <div class="alert alert-success" role="alert">
+                <?= $flash['success'][0]?>
+            </div>
+        <?php endif; ?>
         <main class="flex-grow-1">
             <div class="container-lg mt-3">
                 <?= $content ?>
