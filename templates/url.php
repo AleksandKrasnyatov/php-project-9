@@ -1,10 +1,11 @@
 <?php
 
 use App\Url;
+use App\UrlCheck;
 
 /**
  * @var Url $url
- * @var array $checks
+ * @var UrlCheck[] $checks
  */
 
 ?>
@@ -43,6 +44,15 @@ use App\Url;
     </tr>
     </thead>
     <tbody>
-    <!--?php foreach ($checks as $check): ?-->
+    <?php foreach ($checks as $check): ?>
+        <tr>
+            <td><?= $check->getId() ?></td>
+            <td><?= htmlspecialchars($check->getStatusCode()) ?></td>
+            <td><?= htmlspecialchars($check->getH1()) ?></td>
+            <td><?= htmlspecialchars($check->getTitle()) ?></td>
+            <td><?= htmlspecialchars($check->getDescription()) ?></td>
+            <td><?= htmlspecialchars($check->getDateTime()) ?></td>
+        </tr>
+    <?php endforeach; ?>
     </tbody>
 </table>

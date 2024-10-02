@@ -3,6 +3,8 @@
 require __DIR__ . '/../vendor/autoload.php';
 
 use App\Url;
+use App\UrlCheck;
+use App\UrlCheckRepository;
 use App\UrlRepository;
 use App\UrlValidator;
 use DI\Container;
@@ -62,7 +64,7 @@ $app->get('/', function ($request, $response) {
         'url' => new Url(),
         'errors' => []
     ];
-    return  $this->get('renderer')->render($response, "index.php", $params);
+    return $this->get('renderer')->render($response, "index.php", $params);
 })->setName('home');
 
 $app->get('/urls', function ($request, $response) {
@@ -78,17 +80,19 @@ $app->get('/urls', function ($request, $response) {
 
 $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
     $id = $args['id'];
+    $urlCheckRepository = $this->get(UrlCheckRepository::class);
     $urlRepository = $this->get(UrlRepository::class);
     $url = $urlRepository->find($id);
 
     if (is_null($url)) {
         return $response->write('Page not found')->withStatus(404);
     }
+    $checks = $urlCheckRepository->findByUrlId($id);
     $messages = $this->get('flash')->getMessages();
 
     $params = [
         'url' => $url,
-        'checks' => [],
+        'checks' => $checks,
         'flash' => $messages ?? []
     ];
 
@@ -119,5 +123,17 @@ $app->post('/urls', function ($request, $response, $args) use ($router) {
 
     return $this->get('renderer')->render($response->withStatus(422), 'index.php', $params);
 })->setName('urls.store');
+
+$app->post('/urls/{url_id}/checks', function ($request, $response, $args) use ($router) {
+    $urlId = $args['url_id'];
+    $urlCheckRepository = $this->get(UrlCheckRepository::class);
+    $urlCheck = UrlCheck::create($urlId, date("Y-m-d H:i:s"));
+    $urlCheckRepository->save($urlCheck);
+
+    $this->get('flash')->addMessage('success', 'Url checked successfully');
+
+    return $response->withRedirect($router->urlFor('urls.show', ['id' => $urlId]));
+})->setName('urls.checks');
+
 
 $app->run();
