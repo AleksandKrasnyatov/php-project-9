@@ -14,20 +14,20 @@ class UrlRepository
     public function getEntities(): array
     {
         $urls = [];
-        $sql = "SELECT u.id, u.name, u.created_at, uc.created_at AS check_time, uc.status_code
-                FROM urls u 
-                LEFT JOIN url_checks uc 
-                ON u.id = uc.url_id
-                ORDER BY u.created_at DESC";
+        $sql = "
+            WITH filtered_url_checks AS (
+                SELECT url_id,
+                    status_code,
+                    created_at,
+                    ROW_NUMBER() over (PARTITION BY url_id ORDER BY created_at DESC) as rn
+                FROM url_checks)
+            SELECT u.id, u.name, u.created_at, fuc.created_at AS check_time, fuc.status_code
+            FROM urls u
+            LEFT JOIN filtered_url_checks fuc ON u.id = fuc.url_id AND fuc.rn = 1
+        ";
         $stmt = $this->conn->query($sql);
 
         while ($row = $stmt->fetch()) {
-            if (array_key_exists($row['id'], $urls)) {
-                $existUrl = $urls[$row['id']];
-                if ($existUrl->getLastCheckedAt() > $row['check_time']) {
-                    continue;
-                }
-            }
             $url = Url::create($row['name'], $row['created_at']);
             $url->setId($row['id']);
             $url->setLastCheckedAt($row['check_time']);
