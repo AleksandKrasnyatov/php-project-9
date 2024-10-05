@@ -34,6 +34,7 @@ $container->set('flash', function () {
 
 $container->set(\PDO::class, function () {
     $databaseUrl = parse_url($_ENV['DATABASE_URL']);
+    dd($databaseUrl);
     $conStr = sprintf(
         "pgsql:host=%s;port=%d;dbname=%s;user=%s;password=%s",
         $databaseUrl['host'],
