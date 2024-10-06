@@ -8,10 +8,12 @@ use App\UrlCheckRepository;
 use App\UrlRepository;
 use App\UrlValidator;
 use DI\Container;
+use GuzzleHttp\Client;
 use Slim\Factory\AppFactory;
 use Slim\Flash\Messages;
 use Slim\Middleware\MethodOverrideMiddleware;
 use Slim\Views\PhpRenderer;
+use DiDom\Document;
 
 // Старт PHP сессии
 session_start();
@@ -107,11 +109,11 @@ $app->post('/urls', function ($request, $response, $args) use ($router) {
 
     if (count($errors) === 0) {
         if ($url = $urlRepository->findByName($urlData['name'])) {
-            $this->get('flash')->addMessage('success', 'Url is already exists');
+            $this->get('flash')->addMessage('success', 'Страница уже существует');
         } else {
             $url = Url::create($urlData['name'], date("Y-m-d H:i:s"));
             $urlRepository->save($url);
-            $this->get('flash')->addMessage('success', 'Url was added successfully');
+            $this->get('flash')->addMessage('success', 'Страница успешно добавлена');
         }
         return $response->withRedirect($router->urlFor('urls.show', ['id' => $url->getId()]));
     }
@@ -125,12 +127,31 @@ $app->post('/urls', function ($request, $response, $args) use ($router) {
 })->setName('urls.store');
 
 $app->post('/urls/{url_id}/checks', function ($request, $response, $args) use ($router) {
+    $client = new Client();
     $urlId = $args['url_id'];
     $urlCheckRepository = $this->get(UrlCheckRepository::class);
-    $urlCheck = UrlCheck::create($urlId, date("Y-m-d H:i:s"));
-    $urlCheckRepository->save($urlCheck);
-
-    $this->get('flash')->addMessage('success', 'Url checked successfully');
+    $urlRepository = $this->get(UrlRepository::class);
+    $url = $urlRepository->find($urlId);
+    if (is_null($url)) {
+        return $response->write('Адрес страницы не найден')->withStatus(404);
+    }
+    try {
+        $guzzleResponse = $client->request('GET', $url->getName());
+        $statusCode = $guzzleResponse->getStatusCode();
+        $urlCheck = UrlCheck::create($urlId, date("Y-m-d H:i:s"));
+        $urlCheck->setStatusCode($statusCode);
+        $document = new Document($url->getName(), true);
+        $h1 = $document->first('h1',);
+        $title = $document->first('title');
+        $description = $document->first('meta[name=description]');
+        $urlCheck->setH1(optional($h1)->text());
+        $urlCheck->setTitle(optional($title)->text());
+        $urlCheck->setDescription(optional($description)->getAttribute('content'));
+        $urlCheckRepository->create($urlCheck);
+        $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+    } catch (\Exception $e) {
+        $this->get('flash')->addMessage('error', 'Ошибка соединения');
+    }
 
     return $response->withRedirect($router->urlFor('urls.show', ['id' => $urlId]));
 })->setName('urls.checks');

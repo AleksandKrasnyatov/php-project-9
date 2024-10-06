@@ -47,11 +47,11 @@ use App\UrlCheck;
     <?php foreach ($checks as $check): ?>
         <tr>
             <td><?= $check->getId() ?></td>
-            <td><?= htmlspecialchars($check->getStatusCode()) ?></td>
-            <td><?= htmlspecialchars($check->getH1()) ?></td>
-            <td><?= htmlspecialchars($check->getTitle()) ?></td>
-            <td><?= htmlspecialchars($check->getDescription()) ?></td>
-            <td><?= htmlspecialchars($check->getDateTime()) ?></td>
+            <td><?= htmlspecialchars($check->getStatusCode() ?? '') ?></td>
+            <td><?= htmlspecialchars($check->getH1() ?? '') ?></td>
+            <td><?= htmlspecialchars($check->getTitle() ?? '') ?></td>
+            <td><?= htmlspecialchars($check->getDescription() ?? '') ?></td>
+            <td><?= htmlspecialchars($check->getDateTime() ?? '') ?></td>
         </tr>
     <?php endforeach; ?>
     </tbody>

@@ -41,9 +41,15 @@
             </nav>
         </header>
         <?php if (!empty($flash)): ?>
-            <div class="alert alert-success" role="alert">
-                <?= $flash['success'][0]?>
-            </div>
+            <?php if (array_key_exists('success', $flash)): ?>
+                <div class="alert alert-success" role="alert">
+                    <?= $flash['success'][0]?>
+                </div>
+                <?php elseif (array_key_exists('error', $flash)): ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= $flash['error'][0]?>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
         <main class="flex-grow-1">
             <div class="container-lg mt-3">

@@ -21,33 +21,28 @@ class UrlCheckRepository
         while ($row = $stmt->fetch()) {
             $urlCheck = UrlCheck::create($row['url_id'], $row['created_at']);
             $urlCheck->setId($row['id']);
+            $urlCheck->setStatusCode($row['status_code']);
+            $urlCheck->setH1($row['h1']);
+            $urlCheck->setTitle($row['title']);
+            $urlCheck->setDescription($row['description']);
             $checks[] = $urlCheck;
         }
 
         return $checks;
     }
 
-    public function save(UrlCheck $urlCheck): void
+    public function create(UrlCheck $urlCheck): void
     {
-        if ($urlCheck->exists()) {
-            $this->update($urlCheck);
-        } else {
-            $this->create($urlCheck);
-        }
-    }
-
-    private function update(UrlCheck $urlCheck): void
-    {
-    }
-
-    private function create(UrlCheck $urlCheck): void
-    {
-        $sql = "INSERT INTO url_checks (url_id, created_at) VALUES (:url_id, :created_at)";
+        $sql = "INSERT INTO url_checks (url_id, status_code, h1, title, description, created_at) 
+                VALUES (:url_id, :status_code, :h1, :title, :description, :created_at)";
         $stmt = $this->conn->prepare($sql);
-        $urlId = $urlCheck->getUrlId();
-        $created_at = $urlCheck->getDateTime();
-        $stmt->bindParam(':url_id', $urlId);
-        $stmt->bindParam(':created_at', $created_at);
+
+        $stmt->bindParam(':url_id', $urlCheck->getUrlId());
+        $stmt->bindParam(':status_code', $urlCheck->getStatusCode());
+        $stmt->bindParam(':h1', $urlCheck->getH1());
+        $stmt->bindParam(':title', $urlCheck->getTitle());
+        $stmt->bindParam(':description', $urlCheck->getDescription());
+        $stmt->bindParam(':created_at', $urlCheck->getDateTime());
         $stmt->execute();
         $id = (int)$this->conn->lastInsertId();
         $urlCheck->setId($id);
