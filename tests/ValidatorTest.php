@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Validator;
+namespace Tests;
 
 use App\UrlValidator;
 use PHPUnit\Framework\TestCase;
