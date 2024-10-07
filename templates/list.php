@@ -19,17 +19,17 @@ use App\Url;
         </tr>
         </thead>
         <tbody>
-        <?php foreach ($urls as $url): ?>
-        <tr>
-            <td><?= $url->getId() ?></td>
-            <td>
-                <a href="/urls/<?= $url->getId() ?>">
-                    <?= htmlspecialchars($url->getName() ?? '') ?>
-                </a>
-            </td>
-            <td><?= htmlspecialchars($url->getLastCheckedAt() ?? '') ?></td>
-            <td><?= htmlspecialchars($url->getStatus() ?? '') ?></td>
-        </tr>
+        <?php foreach ($urls as $url) : ?>
+            <tr>
+                <td><?= $url->getId() ?></td>
+                <td>
+                    <a href="/urls/<?= $url->getId() ?>">
+                        <?= htmlspecialchars($url->getName() ?? '') ?>
+                    </a>
+                </td>
+                <td><?= htmlspecialchars($url->getLastCheckedAt() ?? '') ?></td>
+                <td><?= htmlspecialchars($url->getStatus() ?? '') ?></td>
+            </tr>
         <?php endforeach; ?>
         </tbody>
     </table>

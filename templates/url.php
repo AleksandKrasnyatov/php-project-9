@@ -9,7 +9,7 @@ use App\UrlCheck;
  */
 
 ?>
-<h1>Сайт: <?= htmlspecialchars($url->getName() ?? '')?></h1>
+<h1>Сайт: <?= htmlspecialchars($url->getName() ?? '') ?></h1>
 <div class="table-responsive">
     <table class="table table-bordered table-hover text-nowrap" data-test="url">
         <tbody>
@@ -19,11 +19,11 @@ use App\UrlCheck;
         </tr>
         <tr>
             <td>Имя</td>
-            <td><?= htmlspecialchars($url->getName() ?? '')?></td>
+            <td><?= htmlspecialchars($url->getName() ?? '') ?></td>
         </tr>
         <tr>
             <td>Дата создания</td>
-            <td><?= htmlspecialchars($url->getDateTime() ?? '')?></td>
+            <td><?= htmlspecialchars($url->getDateTime() ?? '') ?></td>
         </tr>
         </tbody>
     </table>
@@ -44,7 +44,7 @@ use App\UrlCheck;
     </tr>
     </thead>
     <tbody>
-    <?php foreach ($checks as $check): ?>
+    <?php foreach ($checks as $check) : ?>
         <tr>
             <td><?= $check->getId() ?></td>
             <td><?= htmlspecialchars($check->getStatusCode() ?? '') ?></td>
