@@ -26,15 +26,15 @@ class UrlRepository
             LEFT JOIN filtered_url_checks fuc ON u.id = fuc.url_id AND fuc.rn = 1
         ";
         $stmt = $this->conn->query($sql);
-
-        while ($row = $stmt->fetch()) {
-            $url = Url::create($row['name'], $row['created_at']);
-            $url->setId($row['id']);
-            $url->setLastCheckedAt($row['check_time']);
-            $url->setStatus($row['status_code']);
-            $urls[$row['id']] = $url;
+        if ($stmt) {
+            while ($row = $stmt->fetch()) {
+                $url = Url::create($row['name'], $row['created_at']);
+                $url->setId($row['id']);
+                $url->setLastCheckedAt($row['check_time']);
+                $url->setStatus($row['status_code']);
+                $urls[$row['id']] = $url;
+            }
         }
-
         return $urls;
     }
 

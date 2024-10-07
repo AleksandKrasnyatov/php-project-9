@@ -80,7 +80,7 @@ $app->get('/urls', function ($request, $response) {
     return $this->get('renderer')->render($response, 'list.php', $params);
 })->setName('urls.index');
 
-$app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
+$app->get('/urls/{id}', function ($request, $response, $args) {
     $id = $args['id'];
     $urlCheckRepository = $this->get(UrlCheckRepository::class);
     $urlRepository = $this->get(UrlRepository::class);
@@ -101,7 +101,7 @@ $app->get('/urls/{id}', function ($request, $response, $args) use ($router) {
     return $this->get('renderer')->render($response, 'url.php', $params);
 })->setName('urls.show');
 
-$app->post('/urls', function ($request, $response, $args) use ($router) {
+$app->post('/urls', function ($request, $response) use ($router) {
     $urlRepository = $this->get(UrlRepository::class);
     $urlData = $request->getParsedBodyParam('url');
     $validator = new UrlValidator();
