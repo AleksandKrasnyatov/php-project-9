@@ -37,12 +37,18 @@ class UrlCheckRepository
                 VALUES (:url_id, :status_code, :h1, :title, :description, :created_at)";
         $stmt = $this->conn->prepare($sql);
 
-        $stmt->bindParam(':url_id', $urlCheck->getUrlId());
-        $stmt->bindParam(':status_code', $urlCheck->getStatusCode());
-        $stmt->bindParam(':h1', $urlCheck->getH1());
-        $stmt->bindParam(':title', $urlCheck->getTitle());
-        $stmt->bindParam(':description', $urlCheck->getDescription());
-        $stmt->bindParam(':created_at', $urlCheck->getDateTime());
+        $urlId = $urlCheck->getUrlId();
+        $stmt->bindParam(':url_id', $urlId);
+        $statusCode = $urlCheck->getStatusCode();
+        $stmt->bindParam(':status_code', $statusCode);
+        $h1 = $urlCheck->getH1();
+        $stmt->bindParam(':h1', $h1);
+        $title = $urlCheck->getTitle();
+        $stmt->bindParam(':title', $title);
+        $description = $urlCheck->getDescription();
+        $stmt->bindParam(':description', $description);
+        $dateTime = $urlCheck->getDateTime();
+        $stmt->bindParam(':created_at', $dateTime);
         $stmt->execute();
         $id = (int)$this->conn->lastInsertId();
         $urlCheck->setId($id);
