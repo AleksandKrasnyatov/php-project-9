@@ -8,7 +8,7 @@ class Url
     private ?string $name = null;
     private ?string $created_at = null;
     private ?string $last_checked_at = null;
-    private ?int $status = null;
+    private ?int $status_code = null;
 
     public static function create(string $name, string $time = null): Url
     {
@@ -69,13 +69,14 @@ class Url
         $this->last_checked_at = $last_checked_at;
     }
 
-    public function getStatus(): ?int
+    public function getStatusCode(): ?int
     {
-        return $this->status;
+        return $this->status_code;
     }
 
-    public function setStatus(?int $status): void
+
+    public function setStatusCode(?int $status): void
     {
-        $this->status = $status;
+        $this->status_code = $status;
     }
 }

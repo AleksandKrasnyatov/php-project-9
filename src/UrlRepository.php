@@ -31,7 +31,7 @@ class UrlRepository
                 $url = Url::create($row['name'], $row['created_at']);
                 $url->setId($row['id']);
                 $url->setLastCheckedAt($row['check_time']);
-                $url->setStatus($row['status_code']);
+                $url->setStatusCode($row['status_code']);
                 $urls[$row['id']] = $url;
             }
         }
