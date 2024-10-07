@@ -7,6 +7,8 @@ use App\Url;
  * @var array $errors
  */
 
+$inputClass = isset($errors['name']) ? 'is-invalid' : '';
+
 ?>
 <h1></h1>
 <div class="row">
@@ -16,8 +18,9 @@ use App\Url;
         <form action="/urls" method="post" class="row" required>
             <div class="col-8">
                 <label for="text" class="visually-hidden">Url для проверки</label>
-                <input type="text" name="url[name]" value="<?= htmlspecialchars($url->getName() ?? '') ?>" class="form-control form-control-lg" placeholder="https://www.example.com">
-                <?php if (isset($errors['name'])): ?>
+                <input type="text" name="url[name]" value="<?= htmlspecialchars($url->getName() ?? '') ?>"
+                       class="form-control form-control-lg <?= $inputClass ?>" placeholder="https://www.example.com">
+                <?php if (isset($errors['name'])) : ?>
                     <div class="invalid-feedback">
                         <?= $errors['name'] ?>
                     </div>

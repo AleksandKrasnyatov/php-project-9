@@ -22,21 +22,21 @@ class ValidatorTest extends TestCase
     public function testTooLongUrl(): void
     {
         $longUrl = ['name' => str_pad('http://example.com', 256, 'a')];
-        $longException = ['name' => 'max 255 symbols allowed'];
+        $longException = ['name' => 'Максимум допустимо 255 символов'];
         $this->assertEquals($longException, $this->validator->validate($longUrl));
     }
 
     public function testBlankUrl(): void
     {
         $emptyUrl = ['name' => ''];
-        $longException = ['name' => "field can't be blank"];
+        $longException = ['name' => "URL не должен быть пустым"];
         $this->assertEquals($longException, $this->validator->validate($emptyUrl));
     }
 
     public function testInvalidUrl(): void
     {
-        $incorrectUrl = ['name' => 'example.com'];
-        $longException = ['name' => "url is not valid"];
+        $incorrectUrl = ['name' => 'httpsss://abcabca@test.ru'];
+        $longException = ['name' => "Некорректный URL"];
         $this->assertEquals($longException, $this->validator->validate($incorrectUrl));
     }
 }
