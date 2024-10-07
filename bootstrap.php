@@ -1,9 +1,0 @@
-<?php
-
-$autoloadPath = __DIR__ . '/vendor/autoload.php';
-
-if (file_exists($autoloadPath)) {
-    require_once $autoloadPath;
-} else {
-    throw new Exception('Autoload file not found');
-}
