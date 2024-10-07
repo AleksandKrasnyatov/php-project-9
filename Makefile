@@ -4,7 +4,7 @@ start:
 	PHP_CLI_SERVER_WORKERS=5 php -S 0.0.0.0:$(PORT) -t public
 
 install:
-	composer install
+	composer install && composer dump-autoload
 
 validate:
 	composer validate
