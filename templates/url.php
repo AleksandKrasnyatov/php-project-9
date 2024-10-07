@@ -47,7 +47,7 @@ use App\UrlCheck;
     <?php foreach ($checks as $check) : ?>
         <tr>
             <td><?= $check->getId() ?></td>
-            <td><?= htmlspecialchars((string) ($url->getStatus() ?? '')) ?></td>
+            <td><?= $url->getStatus() ?? '' ?></td>
             <td><?= htmlspecialchars($check->getH1() ?? '') ?></td>
             <td><?= htmlspecialchars($check->getTitle() ?? '') ?></td>
             <td><?= htmlspecialchars($check->getDescription() ?? '') ?></td>

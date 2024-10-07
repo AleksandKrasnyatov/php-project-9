@@ -28,7 +28,7 @@ use App\Url;
                     </a>
                 </td>
                 <td><?= htmlspecialchars($url->getLastCheckedAt() ?? '') ?></td>
-                <td><?= htmlspecialchars((string) ($url->getStatus() ?? '')) ?></td>
+                <td><?= $url->getStatus() ?? '' ?></td>
             </tr>
         <?php endforeach; ?>
         </tbody>
