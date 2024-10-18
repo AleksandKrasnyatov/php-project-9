@@ -2,6 +2,8 @@
 
 namespace Tests;
 
+require __DIR__ . '/../vendor/autoload.php';
+
 use App\UrlValidator;
 use PHPUnit\Framework\TestCase;
 
