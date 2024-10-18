@@ -3,11 +3,7 @@
     "description": "project to analyze web-pages",
     "autoload": {
         "psr-4": {
-            "App\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
+            "App\\": "src/",
             "Tests\\": "tests/"
         }
     },
